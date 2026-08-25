@@ -1,0 +1,61 @@
+{
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 3050 Laptop GPU",
+    "advertised_vram_mib": 4096
+  },
+  "model": {
+    "source": "ibm-granite/granite-embedding-97m-multilingual-r2",
+    "parameters": 97768992,
+    "max_position_embeddings": 32768,
+    "tied_decoder": true,
+    "recommended_generation_slots": 12
+  },
+  "initial_run": {
+    "train_examples": 7000,
+    "validation_examples": 256,
+    "max_length": 96,
+    "epochs": 3,
+    "updates": 2625,
+    "elapsed_seconds": 333.41239570302423,
+    "peak_vram_mib": 1526.51904296875,
+    "held_out_random_noise": {
+      "cross_entropy": 3.6605,
+      "token_accuracy": 0.4262
+    },
+    "held_out_full_mask": {
+      "cross_entropy": 5.4220,
+      "token_accuracy": 0.1580
+    }
+  },
+  "ten_hour_continuation": {
+    "train_examples": 498601,
+    "validation_examples": 1024,
+    "eligible_examples": 499625,
+    "max_length": 256,
+    "updates": 226738,
+    "example_presentations": 1360418,
+    "dataset_passes": 2.7284702597868837,
+    "elapsed_seconds": 36000.81172210106,
+    "peak_vram_mib": 2811.04296875,
+    "stop_reason": "duration_complete",
+    "held_out_random_noise": {
+      "cross_entropy": 2.114029868122441,
+      "token_accuracy": 0.5881112561502159
+    },
+    "held_out_full_mask": {
+      "cross_entropy": 4.662123026803756,
+      "token_accuracy": 0.16270469715185937
+    },
+    "model_sha256": "e3361bdbd87c22a5ed3bdf778e0063cda02f070d45f75e6d61cc62be03219d08"
+  },
+  "matching_baseline_on_1024_example_split": {
+    "held_out_random_noise": {
+      "cross_entropy": 3.998898214024585,
+      "token_accuracy": 0.3688121297319008
+    },
+    "held_out_full_mask": {
+      "cross_entropy": 6.144977181420675,
+      "token_accuracy": 0.09009576717383193
+    }
+  }
+}

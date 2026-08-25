@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=79"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "granite-diffusion"
+version = "0.1.0"
+description = "Masked-diffusion text generation from Granite Embedding 97M R2"
+requires-python = ">=3.10"
+dependencies = [
+  "torch==2.8.0",
+  "transformers==4.56.2",
+  "safetensors==0.6.2",
+  "pyarrow==21.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
