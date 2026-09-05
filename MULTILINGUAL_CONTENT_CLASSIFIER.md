@@ -110,6 +110,59 @@ An initial set could include:
 Facets do not claim that a value was extracted correctly. They say that a type of
 information appears to be present and can guide retrieval or a later bounded extractor.
 
+### Why facets improve search
+
+A facet is the bridge between finding a relevant record and finding a record that can
+answer the question. Domain identifies the subject, content kind identifies the
+information object, and facets identify the answerable fields present in that object.
+
+| Query | Domain | Content kind | Requested facet |
+| --- | --- | --- | --- |
+| `When is my dentist appointment?` | health | event / booking | date |
+| `Where is the appointment?` | health | event / booking | location |
+| `How much was the electricity bill?` | home / finance | bill | amount |
+| `What is my train booking number?` | travel | booking | identifier |
+| `Has my refund arrived?` | shopping / finance | receipt / message | status |
+
+Two records may both be classified as `health` and `event`, while only one contains a
+date. Facet compatibility lets ranking prefer the record that is not merely related but
+is capable of answering the query.
+
+The two sides should be named explicitly:
+
+- `available_facets` are predicted once for an indexed record.
+- `requested_facets` are produced from the user's query by QP.
+
+For example:
+
+```json
+{
+  "record": {"available_facets": {"date": 0.94, "location": 0.81}},
+  "query_plan": {"requested_facets": ["date"]}
+}
+```
+
+At ranking time, requested-facet coverage is a cheap soft feature over already
+retrieved candidates. After ranking, the same request can route the winning evidence to
+a bounded date, amount, location, or identifier extractor. It can also support a
+grounded explanation such as `Matched appointment date`.
+
+This separation is especially useful across languages: query expressions equivalent
+to `when` can all map to the internal `date` ID even when the stored record uses a
+different language or wording.
+
+A facet is not the extracted value. An `available_facets.date` score of `0.94` means
+that a date probably appears in the record; it does not identify the correct date or
+prove what that date means. Extraction and evidence validation must still determine the
+answer.
+
+The first pilot should use only facets with an explicit search behavior: `date`,
+`deadline`, `amount`, `location`, `contact`, `identifier`, and `status`. Broader facets
+such as `person` or `action` should be added only when they produce a measurable ranking,
+extraction, or explanation benefit. The facet head should remain optional until an
+ablation demonstrates better Recall@K, ranking quality, or answer-evidence hit rate than
+embeddings plus domain and content kind alone.
+
 ### Known metadata is not a prediction target
 
 The system already knows whether content came from a note, file, message, or image OCR.
@@ -124,7 +177,7 @@ Example indexed representation:
   "source_kind": "image_ocr",
   "domains": {"health": 0.97, "finance": 0.58},
   "content_kinds": {"receipt": 0.91, "prescription": 0.63},
-  "facets": {"amount": 0.96, "date": 0.89}
+  "available_facets": {"amount": 0.96, "date": 0.89}
 }
 ```
 
