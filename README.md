@@ -18,6 +18,15 @@ and instruction diffusion objective. Model quality depends on the amount of loca
   directly with BF16, Adafactor, and microbatch 8, so checkpointing was unnecessary.
 - `scripts/train.py` refuses to train without CUDA and records actual peak allocated VRAM.
 
+## Related design direction
+
+[MULTILINGUAL_CONTENT_CLASSIFIER.md](MULTILINGUAL_CONTENT_CLASSIFIER.md) records a
+proposed non-generative use of the Granite encoder: one-pass, multilingual domain,
+content-kind, and facet classification for on-device search. It covers the product
+rationale, QP/search integration, dataset strategy, OCR robustness, training plan,
+and evaluation gates. This is a design direction, not an implemented or benchmarked
+result of the diffusion checkpoint.
+
 ## Reproduce
 
 All Python packages live in `.venv`.
